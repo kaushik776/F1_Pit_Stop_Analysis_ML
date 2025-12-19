@@ -1,3 +1,33 @@
+"""
+PIT STOP - F1 Strategy & Telemetry Simulator Application.
+
+This module serves as the main entry point for the Flask web application.
+It defines the core routing logic, handling user requests for the Strategy
+Simulator and Telemetry Dashboard. It acts as the controller, bridging the
+frontend HTML templates with the backend data processing utilities.
+
+Key Components:
+    - Routes:
+        - /: Homepage rendering.
+        - /simulator: Handles race strategy predictions and track mapping
+          (GET/POST).
+        - /telemetry: Handles driver comparisons, speed traces, and pace
+          analysis (GET/POST).
+    - Visualization: Uses Plotly to generate interactive JSON graphs passed
+       to the frontend.
+
+Dependencies:
+    - Flask: Web framework for handling HTTP requests and templating.
+    - plotly: For generating interactive race charts and maps.
+    - utils.f1_data: Custom module for backend data extraction, ML prediction.
+
+Usage:
+    Run this file directly to start the development server:
+    $ python app.py
+
+Author: [Your Name/Team Name]
+Version: 1.0
+"""
 import json
 import plotly
 import plotly.graph_objs as go
@@ -11,12 +41,26 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
+    """Renders the homepage of the PIT STOP application.
+
+    Returns:
+        str: The rendered HTML content of 'home.html'.
+    """
     return render_template('home.html')
 
 
 @app.route('/simulator', methods=['GET', 'POST'])
-def simulator():
-    
+def simulator() -> str:
+    """Handles the Strategy Simulator page logic.
+
+    On GET: Renders the simulation input form.
+    On POST: Processes user input to generate a race strategy prediction
+    and a circuit map visualization.
+
+    Returns:
+        str: The rendered HTML content of 'simulator.html', including
+             prediction results and map data.
+    """
     result = None
     mapJSON = None
     error = None
